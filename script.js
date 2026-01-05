@@ -248,22 +248,50 @@ windControl.addEventListener('mousedown', (e) => { isDraggingWind = true; update
 window.addEventListener('mousemove', (e) => { if(isDraggingWind) updateWindDirection(e); });
 window.addEventListener('mouseup', () => { isDraggingWind = false; });
 
+// --- UI HELPER: Slider Progress & Magnetic Snap ---
 function updateSliderUI(slider) {
-    const min = slider.min ? parseFloat(slider.min) : 0;
-    const max = slider.max ? parseFloat(slider.max) : 100;
-    const val = parseFloat(slider.value);
-    const percentage = ((val - min) / (max - min)) * 100;
+    const min = parseFloat(slider.min) || 0;
+    const max = parseFloat(slider.max) || 100;
+    
+    // 1. Get the "Standard" value (from the HTML value="" attribute)
+    const standardVal = parseFloat(slider.defaultValue);
+    
+    let currentVal = parseFloat(slider.value);
+
+    // 2. MAGNETIC SNAP LOGIC
+    // Calculate 4% of the total range
+    const range = max - min;
+    const snapZone = range * 0.04; 
+
+    // If the slider is within the 'snapZone', force it to the standard value
+    if (Math.abs(currentVal - standardVal) < snapZone) {
+        currentVal = standardVal;
+        slider.value = standardVal; // Physically move the slider thumb
+    }
+
+    // 3. Update Visuals (Fill Bar)
+    const percentage = ((currentVal - min) / (max - min)) * 100;
     slider.style.setProperty('--progress', `${percentage}%`);
+
+    // 4. Update Number Display
     const displayId = slider.getAttribute('data-display');
     if (displayId) {
         const displayEl = document.getElementById(displayId);
         if (displayEl) {
-            displayEl.textContent = val;
+            // Check if it's a decimal (like Tear Strength) or integer
+            // If it has a decimal point in the step, keep formatting clean
+            if (slider.step && slider.step.includes('.')) {
+                displayEl.textContent = currentVal.toFixed(1);
+            } else {
+                displayEl.textContent = currentVal;
+            }
         }
     }
 }
+
+// Attach listeners
 document.querySelectorAll('.progress-slider').forEach(s => {
-    updateSliderUI(s);
+    updateSliderUI(s); // Init on load
     s.addEventListener('input', () => updateSliderUI(s));
 });
 
