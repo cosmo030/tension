@@ -248,38 +248,36 @@ windControl.addEventListener('mousedown', (e) => { isDraggingWind = true; update
 window.addEventListener('mousemove', (e) => { if(isDraggingWind) updateWindDirection(e); });
 window.addEventListener('mouseup', () => { isDraggingWind = false; });
 
-// --- UI HELPER: Slider Progress & Magnetic Snap ---
+// --- UI HELPER: Slider Progress, Magnetic Snap & Visual Marker ---
 function updateSliderUI(slider) {
     const min = parseFloat(slider.min) || 0;
     const max = parseFloat(slider.max) || 100;
-    
-    // 1. Get the "Standard" value (from the HTML value="" attribute)
     const standardVal = parseFloat(slider.defaultValue);
     
     let currentVal = parseFloat(slider.value);
 
-    // 2. MAGNETIC SNAP LOGIC
-    // Calculate 4% of the total range
+    // 1. MAGNETIC SNAP LOGIC (4% Zone)
     const range = max - min;
     const snapZone = range * 0.04; 
 
-    // If the slider is within the 'snapZone', force it to the standard value
     if (Math.abs(currentVal - standardVal) < snapZone) {
         currentVal = standardVal;
-        slider.value = standardVal; // Physically move the slider thumb
+        slider.value = standardVal;
     }
 
-    // 3. Update Visuals (Fill Bar)
-    const percentage = ((currentVal - min) / (max - min)) * 100;
-    slider.style.setProperty('--progress', `${percentage}%`);
+    // 2. CALCULATE VISUAL POSITIONS
+    const progressPct = ((currentVal - min) / range) * 100;
+    const defaultPct = ((standardVal - min) / range) * 100;
+
+    // 3. PASS TO CSS
+    slider.style.setProperty('--progress', `${progressPct}%`);
+    slider.style.setProperty('--default-pos', `${defaultPct}%`);
 
     // 4. Update Number Display
     const displayId = slider.getAttribute('data-display');
     if (displayId) {
         const displayEl = document.getElementById(displayId);
         if (displayEl) {
-            // Check if it's a decimal (like Tear Strength) or integer
-            // If it has a decimal point in the step, keep formatting clean
             if (slider.step && slider.step.includes('.')) {
                 displayEl.textContent = currentVal.toFixed(1);
             } else {
@@ -288,6 +286,12 @@ function updateSliderUI(slider) {
         }
     }
 }
+
+// Attach listeners
+document.querySelectorAll('.progress-slider').forEach(s => {
+    updateSliderUI(s);
+    s.addEventListener('input', () => updateSliderUI(s));
+});
 
 // Attach listeners
 document.querySelectorAll('.progress-slider').forEach(s => {

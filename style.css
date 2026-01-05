@@ -258,9 +258,24 @@ input[type=range]::-webkit-slider-runnable-track {
     height: 4px;
     border-radius: 2px;
     cursor: pointer;
-    /* We use a gradient to create the "Fill" effect. 
-       The color stops are updated via JS. */
-    background: linear-gradient(to right, var(--slider-fill) 0%, var(--slider-fill) var(--progress, 0%), #333 var(--progress, 0%), #333 100%);
+    
+    /* DUAL LAYER BACKGROUND */
+    background: 
+        /* Layer 1: The "Standard" Tick Mark (White, 2px wide) */
+        linear-gradient(90deg, 
+            transparent calc(var(--default-pos) - 1px), 
+            rgba(255, 255, 255, 0.8) calc(var(--default-pos) - 1px), 
+            rgba(255, 255, 255, 0.8) calc(var(--default-pos) + 1px), 
+            transparent calc(var(--default-pos) + 1px)
+        ),
+        
+        /* Layer 2: The Progress Fill (Blue/Grey) */
+        linear-gradient(to right, 
+            var(--slider-fill) 0%, 
+            var(--slider-fill) var(--progress, 0%), 
+            #333 var(--progress, 0%), 
+            #333 100%
+        );
 }
 
 /* The Thumb */
