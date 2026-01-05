@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tension.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button id="menu-toggle">☰</button>
+
+    <div id="sidebar">
+        <h2 style="margin-bottom: 20px;">tension.</h2>
+        
+        <details open> <summary>ACTIONS</summary>
+            <div class="accordion-content">
+                <div class="accordion-inner"> <button id="drawBtn" class="action-btn">
+                        <span>✎</span> Draw Top Rail
+                    </button>
+                    <button id="regenBtn" class="action-btn">
+                        <span>↻</span> Regenerate Cloth
+                    </button>
+                    <button id="resetBtn" class="action-btn is-danger">
+                        <span>⚠</span> Reset Scene
+                    </button>
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>PROPERTIES</summary>
+            <div class="accordion-content">
+                <div class="accordion-inner"> <div class="slider-container">
+                        <div class="slider-header">
+                            <label>Grid Density</label>
+                            <span id="densityVal" class="value-display">35</span>
+                        </div>
+                        <input type="range" id="densitySlider" class="progress-slider" 
+                            min="20" max="50" value="35" data-display="densityVal">
+                    </div>
+
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <label>Tear Strength</label>
+                            <span id="tearVal" class="value-display">5.0</span>
+                        </div>
+                        <input type="range" id="tearSlider" class="progress-slider" 
+                            min="1.1" max="20" step="0.1" value="5.0" data-display="tearVal">
+                    </div>
+
+                    <div class="header-row">
+                        <label style="font-size:11px; color:#aaa; font-weight:600;">COLLISION PRECISION</label>
+                        <label class="switch">
+                            <input type="checkbox" id="collisionToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <p style="font-size:10px; color:#666; margin-top:5px; line-height: 1.4;">
+                        OFF: Phase Through (Fast)<br>
+                        ON: Solid Object (Precise)
+                    </p>
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>WIND CONTROL</summary>
+            <div class="accordion-content">
+                <div class="accordion-inner"> <div class="header-row">
+                        <label style="font-size:11px; color:#aaa; font-weight:600;">ACTIVE</label>
+                        <label class="switch">
+                            <input type="checkbox" id="windToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="wind-circle-container">
+                        <div id="windControl">
+                            <div id="windDot"></div>
+                        </div>
+                        <p class="small-label">DIRECTION</p>
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <label>Strength</label>
+                            <span id="strengthVal" class="value-display">20</span>
+                        </div>
+                        <input type="range" id="strengthSlider" class="progress-slider" 
+                            min="1" max="100" value="20" data-display="strengthVal">
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <label>Wave Speed</label>
+                            <span id="speedVal" class="value-display">10</span>
+                        </div>
+                        <input type="range" id="speedSlider" class="progress-slider" 
+                            min="1" max="50" value="10" data-display="speedVal">
+                    </div>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <div id="instructions">
+        <p>
+            <span style="color: #2ecc71;">Safe</span> • 
+            <span style="color: #e67e22;">Strain</span> • 
+            <span style="color: #e74c3c;">Danger</span>
+        </p>
+        <p>Hover to CUT • Right-click to DRAG</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
