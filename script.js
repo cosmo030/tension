@@ -12,7 +12,7 @@ const Engine = Matter.Engine,
       Vector = Matter.Vector,
       Events = Matter.Events;
 
-// --- 1. Setup Engine ---
+// --- 1. SETUP ENGINE ---
 const engine = Engine.create();
 const world = engine.world;
 
@@ -28,11 +28,10 @@ const render = Render.create({
     }
 });
 
-// --- 2. Cloth Factory Logic ---
+// --- 2. CLOTH FACTORY & GLOBAL STATE ---
 let cloth; 
 let activeStart = null;
 let activeEnd = null;
-// NEW: Global variable to track the resting distance of the grid
 let currentGap = 25; 
 
 const particleOptions = { friction: 0.00001, render: { visible: false } };
@@ -44,10 +43,8 @@ function createCloth(startPoint = null, endPoint = null) {
     activeStart = startPoint;
     activeEnd = endPoint;
 
-    // Density Logic
+    // Density calculation
     const densityVal = parseInt(document.getElementById('densitySlider').value);
-    
-    // UPDATE: Set the global gap variable
     currentGap = 60 - densityVal; 
 
     let x, y, cols, rows, angle;
@@ -99,14 +96,14 @@ function createCloth(startPoint = null, endPoint = null) {
 createCloth();
 
 
-// --- 3. Interaction ---
+// --- 3. INTERACTION LOGIC ---
 const mouse = Mouse.create(render.canvas);
 const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
     constraint: { stiffness: 0.2, render: { visible: false } }
 });
 
-// A. Drawing & Interaction Variables
+// Interaction Variables
 let isDrawing = false;
 let drawStart = null;
 let drawCurrent = null;
@@ -114,14 +111,12 @@ const drawBtn = document.getElementById('drawBtn');
 
 let interactionBody = null;
 const interactionRadius = 30; 
-
-// B. Collision Mode Toggle
 let isSolidMode = false;
+
+// Listeners
 document.getElementById('collisionToggle').addEventListener('change', (e) => {
     isSolidMode = e.target.checked;
 });
-
-// --- EVENT LISTENERS ---
 
 drawBtn.addEventListener('click', () => {
     isDrawing = !isDrawing;
@@ -145,6 +140,7 @@ function cancelDraw() {
     Composite.add(world, mouseConstraint);
 }
 
+// Mouse Down
 render.canvas.addEventListener('mousedown', (e) => {
     const rect = render.canvas.getBoundingClientRect();
     const mX = e.clientX - rect.left;
@@ -164,6 +160,7 @@ render.canvas.addEventListener('mousedown', (e) => {
     }
 });
 
+// Mouse Move
 render.canvas.addEventListener('mousemove', (e) => {
     const rect = render.canvas.getBoundingClientRect();
     const mX = e.clientX - rect.left;
@@ -185,6 +182,7 @@ render.canvas.addEventListener('mousemove', (e) => {
     }
 });
 
+// Mouse Up
 window.addEventListener('mouseup', (e) => {
     if (isDrawing && drawStart) {
         const rect = render.canvas.getBoundingClientRect();
@@ -200,7 +198,7 @@ window.addEventListener('mouseup', (e) => {
 });
 
 
-// --- 4. OTHER UI LOGIC ---
+// --- 4. UI HANDLERS ---
 Composite.add(world, mouseConstraint); 
 render.mouse = mouse;
 
@@ -220,13 +218,12 @@ document.getElementById('densitySlider').addEventListener('change', () => {
     createCloth(activeStart, activeEnd);
 });
 
+// Wind Controls
 let isWindOn = false;
 document.getElementById('windToggle').addEventListener('change', (e) => { isWindOn = e.target.checked; });
 
 const strengthSlider = document.getElementById('strengthSlider');
 const speedSlider = document.getElementById('speedSlider');
-
-// NEW: Tear Strength Slider Reference
 const tearSlider = document.getElementById('tearSlider');
 
 let windAngle = 0; 
@@ -248,7 +245,7 @@ windControl.addEventListener('mousedown', (e) => { isDraggingWind = true; update
 window.addEventListener('mousemove', (e) => { if(isDraggingWind) updateWindDirection(e); });
 window.addEventListener('mouseup', () => { isDraggingWind = false; });
 
-// --- UI HELPER: Slider Progress, Magnetic Snap & Visual Marker ---
+// Slider Helper: Progress, Magnetic Snap & Visuals
 function updateSliderUI(slider) {
     const min = parseFloat(slider.min) || 0;
     const max = parseFloat(slider.max) || 100;
@@ -256,7 +253,7 @@ function updateSliderUI(slider) {
     
     let currentVal = parseFloat(slider.value);
 
-    // 1. MAGNETIC SNAP LOGIC (4% Zone)
+    // Magnetic Snap (4% Zone)
     const range = max - min;
     const snapZone = range * 0.04; 
 
@@ -265,15 +262,14 @@ function updateSliderUI(slider) {
         slider.value = standardVal;
     }
 
-    // 2. CALCULATE VISUAL POSITIONS
+    // Visual Updates
     const progressPct = ((currentVal - min) / range) * 100;
     const defaultPct = ((standardVal - min) / range) * 100;
 
-    // 3. PASS TO CSS
     slider.style.setProperty('--progress', `${progressPct}%`);
     slider.style.setProperty('--default-pos', `${defaultPct}%`);
 
-    // 4. Update Number Display
+    // Number Display
     const displayId = slider.getAttribute('data-display');
     if (displayId) {
         const displayEl = document.getElementById(displayId);
@@ -287,15 +283,8 @@ function updateSliderUI(slider) {
     }
 }
 
-// Attach listeners
 document.querySelectorAll('.progress-slider').forEach(s => {
     updateSliderUI(s);
-    s.addEventListener('input', () => updateSliderUI(s));
-});
-
-// Attach listeners
-document.querySelectorAll('.progress-slider').forEach(s => {
-    updateSliderUI(s); // Init on load
     s.addEventListener('input', () => updateSliderUI(s));
 });
 
@@ -310,11 +299,11 @@ Events.on(engine, 'afterUpdate', function() {
     const isRightClick = mouse.button === 2;
     const time = engine.timing.timestamp;
 
-    // --- TEAR STRENGTH CALCULATION ---
-    // Multiplier (1.1x to 20x) * Resting Distance
+    // Tear Strength Calc
     const tearMultiplier = parseFloat(tearSlider.value);
     const tearDistance = currentGap * tearMultiplier;
 
+    // Wind Logic
     if (isWindOn) {
         const strengthVal = strengthSlider.value * 0.000001; 
         const speedVal = speedSlider.value * 0.0002;
@@ -330,13 +319,14 @@ Events.on(engine, 'afterUpdate', function() {
         }
     }
 
+    // Constraints Logic (Cutting & Breaking)
     for (let i = constraints.length - 1; i >= 0; i--) {
         const constraint = constraints[i];
         const bodyA = constraint.bodyA;
         const bodyB = constraint.bodyB;
         const currentDist = Vector.magnitude(Vector.sub(bodyA.position, bodyB.position));
         
-        // Interaction Logic
+        // Mouse Cut Check (unless interacting)
         if (!isRightClick && !isDrawing && !interactionBody) { 
             const midX = (bodyA.position.x + bodyB.position.x) / 2;
             const midY = (bodyA.position.y + bodyB.position.y) / 2;
@@ -344,19 +334,18 @@ Events.on(engine, 'afterUpdate', function() {
             if (distMouse < cutRadius) { Composite.remove(cloth, constraint); continue; }
         }
 
-        // --- NEW BREAKING LOGIC ---
-        // Break if distance exceeds the calculated limit
+        // Stress Break Check
         if (currentDist > tearDistance) { 
             Composite.remove(cloth, constraint); 
         }
     }
 });
 
-// --- 6. RENDER LOOP (Visuals) ---
+// --- 6. RENDER LOOP ---
 Events.on(render, 'afterRender', function() {
     const context = render.context;
 
-    // A. Draw Drawing Guide
+    // Draw Drawing Guide
     if (isDrawing && drawStart && drawCurrent) {
         context.beginPath();
         context.moveTo(drawStart.x, drawStart.y);
@@ -374,7 +363,7 @@ Events.on(render, 'afterRender', function() {
         context.fill();
     }
 
-    // B. Draw Interaction Body
+    // Draw Interaction Body
     if (interactionBody) {
         const pos = interactionBody.position;
         context.beginPath();
@@ -398,12 +387,9 @@ Events.on(render, 'afterRender', function() {
         context.shadowBlur = 0;
     }
 
-    // C. Draw Cloth (with Dynamic Strain Colors)
+    // Draw Cloth with Strain Colors
     const constraints = Composite.allConstraints(cloth);
     const tearMultiplier = parseFloat(tearSlider.value);
-    // Limit used for color calculation (Visual strain)
-    // We visualize strain relative to the BREAKING point.
-    // So red means "about to break", not just "stretched".
     const breakingDist = currentGap * tearMultiplier;
     
     context.lineWidth = 1;
@@ -413,31 +399,24 @@ Events.on(render, 'afterRender', function() {
         const a = c.bodyA.position;
         const b = c.bodyB.position;
         
-        // Cheap distance calc
         const dx = a.x - b.x;
         const dy = a.y - b.y;
         const dist = Math.sqrt(dx*dx + dy*dy);
-
-        // Strain 0.0 to 1.0 (where 1.0 is breaking point)
-        // We start showing stress when it stretches past resting length
         const strain = (dist - currentGap) / (breakingDist - currentGap);
 
         context.beginPath();
         context.moveTo(a.x, a.y);
         context.lineTo(b.x, b.y);
 
-        if (strain > 0.9) { 
-            context.strokeStyle = '#ff3333'; // Critical
-        } else if (strain > 0.5) { 
-            context.strokeStyle = '#ffaa33'; // Warning
-        } else { 
-            context.strokeStyle = '#2ecc71'; // Safe
-        }
+        if (strain > 0.9) context.strokeStyle = '#ff3333';
+        else if (strain > 0.5) context.strokeStyle = '#ffaa33';
+        else context.strokeStyle = '#2ecc71';
+        
         context.stroke();
     }
 });
 
-// --- 7. ACCORDION ANIMATION MANAGER ---
+// --- 7. ACCORDION MANAGER ---
 document.querySelectorAll('details').forEach((el) => {
     const summary = el.querySelector('summary');
     const content = el.querySelector('.accordion-content');

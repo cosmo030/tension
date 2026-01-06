@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tension.</title>
+    <title>Tension.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,11 +14,13 @@
     <button id="menu-toggle">☰</button>
 
     <div id="sidebar">
-        <h2 style="margin-bottom: 20px;">tension.</h2>
+        <h2 style="margin-bottom: 20px;">Tension.</h2>
         
-        <details open> <summary>ACTIONS</summary>
+        <details open>
+            <summary>ACTIONS</summary>
             <div class="accordion-content">
-                <div class="accordion-inner"> <button id="drawBtn" class="action-btn">
+                <div class="accordion-inner">
+                    <button id="drawBtn" class="action-btn">
                         <span>✎</span> Draw Top Rail
                     </button>
                     <button id="regenBtn" class="action-btn">
@@ -34,7 +36,9 @@
         <details>
             <summary>PROPERTIES</summary>
             <div class="accordion-content">
-                <div class="accordion-inner"> <div class="slider-container">
+                <div class="accordion-inner">
+                    
+                    <div class="slider-container">
                         <div class="slider-header">
                             <label>Grid Density</label>
                             <span id="densityVal" class="value-display">35</span>
@@ -70,19 +74,22 @@
         <details>
             <summary>WIND CONTROL</summary>
             <div class="accordion-content">
-                <div class="accordion-inner"> <div class="header-row">
+                <div class="accordion-inner">
+                    <div class="header-row">
                         <label style="font-size:11px; color:#aaa; font-weight:600;">ACTIVE</label>
                         <label class="switch">
                             <input type="checkbox" id="windToggle">
                             <span class="slider round"></span>
                         </label>
                     </div>
+
                     <div class="wind-circle-container">
                         <div id="windControl">
                             <div id="windDot"></div>
                         </div>
                         <p class="small-label">DIRECTION</p>
                     </div>
+
                     <div class="slider-container">
                         <div class="slider-header">
                             <label>Strength</label>
@@ -91,6 +98,7 @@
                         <input type="range" id="strengthSlider" class="progress-slider" 
                             min="1" max="100" value="20" data-display="strengthVal">
                     </div>
+
                     <div class="slider-container">
                         <div class="slider-header">
                             <label>Wave Speed</label>

@@ -1,21 +1,18 @@
 :root {
-    /* New "Midnight Cyber" Palette */
+    /* Palette */
     --bg-dark: #0a0a12;
     --glass-bg: rgba(15, 15, 25, 0.85);
     --glass-border: rgba(255, 255, 255, 0.08);
     
-    /* Darker, richer blues */
+    /* Accents */
     --accent-blue: #0d47a1; 
     --accent-glow: #1565c0;
     --slider-fill: #2196f3;
     
-    /* Text Colors */
+    /* Text */
     --text-main: #e0e0e0;
     --text-muted: #6c757d;
     --header-gradient: linear-gradient(90deg, #ffffff, #90caf9);
-    
-    /* Button Gradients */
-    --btn-dark-gradient: linear-gradient(145deg, #1c1c2e, #2a2a3d);
 }
 
 body {
@@ -24,12 +21,16 @@ body {
     overflow: hidden;
     background: radial-gradient(circle at 50% -20%, #11111f, #000000);
     color: var(--text-main);
-    /* The requested "Code" Font */
     font-family: 'Fira Code', monospace;
     user-select: none;
 }
 
-/* --- Menu Toggle --- */
+body.drawing-mode, 
+body.drawing-mode canvas {
+    cursor: crosshair !important;
+}
+
+/* --- UI COMPONENTS: Menu Toggle --- */
 #menu-toggle {
     position: absolute;
     top: 25px; left: 25px;
@@ -49,7 +50,7 @@ body {
     box-shadow: 0 0 15px rgba(33, 150, 243, 0.2);
 }
 
-/* --- Sidebar --- */
+/* --- SIDEBAR LAYOUT --- */
 #sidebar {
     position: fixed;
     top: 0; left: 0;
@@ -64,45 +65,23 @@ body {
     z-index: 100;
     box-sizing: border-box;
     overflow-y: auto; 
-    
-    /* Hide scrollbar for Chrome/Safari/Opera (optional, looks cleaner) */
-    -ms-overflow-style: none;  /* IE and Edge */
+    -ms-overflow-style: none;
     scrollbar-width: none;
 }
-#sidebar::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-}
+#sidebar::-webkit-scrollbar { display: none; }
 #sidebar.open { transform: translateX(0); }
 
 h2 {
     margin: 0 0 30px 0;
     font-weight: 600;
-    letter-spacing: -0.5px;
     font-size: 28px;
-    /* Clean Silver/Blue Gradient */
     background: var(--header-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-h3 {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding-bottom: 8px;
-}
-
-hr {
-    border: 0; height: 1px;
-    background: rgba(255,255,255,0.05);
-    margin: 30px 0;
-}
-
-/* --- PROFESSIONAL BUTTONS (Unified Theme) --- */
+/* --- BUTTONS --- */
 .action-btn {
     width: 100%;
     padding: 12px 16px;
@@ -115,57 +94,58 @@ hr {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    text-align: left; /* Aligns icon/text cleanly */
+    text-align: left;
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px; /* Consistent spacing between buttons */
+    margin-bottom: 8px;
 }
-
-/* Hover State: Subtle brightness boost */
 .action-btn:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.3);
-    transform: translateX(2px); /* Micro-interaction */
+    transform: translateX(2px);
 }
 
-/* --- Specific Button Accents (Only on Hover/Active) --- */
-
-/* Draw Button: Primary Action (Blue Accent) */
+/* Specific Button Styles */
+#drawBtn {
+    background: linear-gradient(145deg, #6441a5, #2a0845);
+    color: #fff;
+    font-weight: 700;
+    border-color: rgba(255, 255, 255, 0.2);
+}
 #drawBtn:hover, #drawBtn.active {
-    border-color: var(--slider-fill);
-    color: var(--slider-fill);
-    box-shadow: 0 0 15px rgba(33, 150, 243, 0.1);
+    background: linear-gradient(145deg, #302b63, #0f0c29);
+    box-shadow: 0 0 15px rgba(83, 4, 209, 0.4);
 }
 #drawBtn.active {
-    background: rgba(33, 150, 243, 0.1);
-}
-
-/* Regenerate: Neutral (White Accent) */
-#regenBtn:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 20px #fff;
     border-color: #fff;
+}
+
+#regenBtn {
+    background: linear-gradient(145deg, #0d47a1, #2196f3);
+    border-color: rgba(255,255,255,0.1);
+}
+#regenBtn:hover {
+    background: linear-gradient(145deg, #1565c0, #42a5f5);
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+}
+
+.action-btn.is-danger {
+    background: linear-gradient(145deg, #300, #500);
+    color: #ffcccc;
+    border-color: rgba(255, 0, 0, 0.2);
+}
+.action-btn.is-danger:hover {
+    background: linear-gradient(145deg, #500, #800);
     color: #fff;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
 }
 
-/* Reset Scene: Danger (Red Accent) */
-#resetBtn:hover {
-    border-color: #ff4444;
-    color: #ff4444;
-    background: rgba(255, 68, 68, 0.05);
-}
-
-/* --- SPACER UTILITY --- */
-.spacer-lg {
-    height: 30px; /* The breathing room you asked for */
-    width: 100%;
-    border-bottom: 1px solid rgba(255,255,255,0.05); /* Subtle divider line */
-    margin-bottom: 30px;
-}
-
-/* --- PROFESSIONAL SLIDERS --- */
-.slider-container {
-    margin-bottom: 25px;
-}
+/* --- SLIDERS & INPUTS --- */
+.slider-container { margin-bottom: 25px; }
 
 .slider-header {
     display: flex;
@@ -173,7 +153,6 @@ hr {
     align-items: center;
     margin-bottom: 12px;
 }
-
 .slider-header label {
     font-size: 11px;
     letter-spacing: 1px;
@@ -182,67 +161,16 @@ hr {
     font-weight: 600;
 }
 
-/* The Number Box */
 .value-display {
     font-family: 'Fira Code', monospace;
     font-size: 12px;
     color: #fff;
-    background: rgba(0, 0, 0, 0.5); /* Darker contrast background */
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.15);
     padding: 4px 10px;
     border-radius: 4px;
     min-width: 35px;
     text-align: center;
-}
-
-/* --- WIND DIRECTION WIDGET --- */
-.wind-circle-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-    padding: 20px;
-    /* Subtle container to separate it from sliders */
-    background: rgba(0, 0, 0, 0.2); 
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-}
-
-#windControl {
-    width: 60px;
-    height: 60px;
-    /* Thin, precise border */
-    border: 1px solid rgba(255, 255, 255, 0.2); 
-    border-radius: 50%;
-    position: relative;
-    cursor: crosshair;
-    /* Inner shadow for depth */
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.8); 
-    background: transparent;
-}
-
-#windDot {
-    width: 6px;
-    height: 6px;
-    background: #2196f3; /* Matching the sliders */
-    border-radius: 50%;
-    position: absolute;
-    top: 50%; 
-    left: 50%;
-    /* JS calculates the offset, this just centers the pivot */
-    margin-top: -3px; 
-    margin-left: -3px; 
-    pointer-events: none;
-    box-shadow: 0 0 10px #2196f3;
-}
-
-.small-label {
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: #666; /* Muted text */
-    margin-top: 15px;
-    font-weight: 600;
-    text-transform: uppercase;
 }
 
 input[type=range] {
@@ -251,25 +179,17 @@ input[type=range] {
     width: 100%;
     background: transparent;
 }
-
-/* The Track */
 input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 4px;
+    width: 100%; height: 4px;
     border-radius: 2px;
     cursor: pointer;
-    
-    /* DUAL LAYER BACKGROUND */
     background: 
-        /* Layer 1: The "Standard" Tick Mark (White, 2px wide) */
         linear-gradient(90deg, 
             transparent calc(var(--default-pos) - 1px), 
             rgba(255, 255, 255, 0.8) calc(var(--default-pos) - 1px), 
             rgba(255, 255, 255, 0.8) calc(var(--default-pos) + 1px), 
             transparent calc(var(--default-pos) + 1px)
         ),
-        
-        /* Layer 2: The Progress Fill (Blue/Grey) */
         linear-gradient(to right, 
             var(--slider-fill) 0%, 
             var(--slider-fill) var(--progress, 0%), 
@@ -277,8 +197,6 @@ input[type=range]::-webkit-slider-runnable-track {
             #333 100%
         );
 }
-
-/* The Thumb */
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 16px; width: 16px;
@@ -291,10 +209,41 @@ input[type=range]::-webkit-slider-thumb {
 }
 input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-/* --- Toggle Switch --- */
-.header-row {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+/* --- WIND WIDGET --- */
+.wind-circle-container {
+    display: flex; flex-direction: column; align-items: center;
+    margin: 20px 0; padding: 20px;
+    background: rgba(0, 0, 0, 0.2); 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
 }
+#windControl {
+    width: 60px; height: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    border-radius: 50%;
+    position: relative;
+    cursor: crosshair;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.8); 
+    background: transparent;
+}
+#windDot {
+    width: 6px; height: 6px;
+    background: #2196f3;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%; left: 50%;
+    margin-top: -3px; margin-left: -3px; 
+    pointer-events: none;
+    box-shadow: 0 0 10px #2196f3;
+}
+.small-label {
+    font-size: 10px; letter-spacing: 2px;
+    color: #666; margin-top: 15px;
+    font-weight: 600; text-transform: uppercase;
+}
+
+/* --- SWITCHES --- */
+.header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider {
@@ -313,130 +262,43 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 input:checked + .slider { background-color: var(--accent-blue); }
 input:checked + .slider:before { transform: translateX(20px); background-color: #fff; }
 
-/* --- Instructions --- */
-#instructions {
-    position: absolute; bottom: 30px; width: 100%;
-    text-align: center; pointer-events: none; z-index: 10;
-    opacity: 0.6; font-size: 12px; letter-spacing: 0.5px;
-}
-
-/* Add this to your style.css */
-
-/* Draw Button - distinct color (Amber/Gold) */
-#drawBtn {
-    background: linear-gradient(145deg, #6441a5, #2a0845);
-    color: #fff;
-    font-weight: 700;
-    text-shadow: none;
-    border-color: rgba(255, 255, 255, 0.2);
-}
-#drawBtn:hover {
-    background: linear-gradient(145deg, #302b63, #0f0c29);
-    transform: translateY(-1px);
-    box-shadow: 0 0 15px rgba(83, 4, 209, 0.4);
-}
-
-/* Active State (When Drawing Mode is ON) */
-#drawBtn.active {
-    background: #fff;
-    color: #000;
-    box-shadow: 0 0 20px #fff;
-    border-color: #fff;
-}
-
-/* Regenerate Button (Cyber Blue) */
-#regenBtn {
-    background: linear-gradient(145deg, #0d47a1, #2196f3);
-    border-color: rgba(255,255,255,0.1);
-}
-#regenBtn:hover {
-    background: linear-gradient(145deg, #1565c0, #42a5f5);
-    box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
-}
-
-/* Danger Button (Reset Scene - Dark Red) */
-.action-btn.is-danger {
-    background: linear-gradient(145deg, #300, #500);
-    color: #ffcccc;
-    border-color: rgba(255, 0, 0, 0.2);
-}
-.action-btn.is-danger:hover {
-    background: linear-gradient(145deg, #500, #800);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-}
-
-/* Change cursor when drawing */
-body.drawing-mode {
-    cursor: crosshair !important;
-}
-body.drawing-mode canvas {
-    cursor: crosshair !important;
-}
-
-/* --- ACCORDION SECTIONS (Animated) --- */
+/* --- ACCORDIONS --- */
 details {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     margin-bottom: 10px;
-    overflow: hidden; /* Necessary for height animation */
+    overflow: hidden;
 }
-
 details[open] {
     border-color: rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.04);
 }
-
 summary {
-    list-style: none;
-    padding: 15px;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-    outline: none;
+    list-style: none; padding: 15px;
+    cursor: pointer; font-size: 11px;
+    font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--text-muted);
+    display: flex; justify-content: space-between; align-items: center;
+    user-select: none; outline: none;
     transition: background 0.2s;
 }
-
 summary::-webkit-details-marker { display: none; }
-
 summary:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.05);
+    color: #fff; background: rgba(255, 255, 255, 0.05);
 }
-
-/* Arrow Icon with rotation */
 summary::after {
-    content: '›';
-    font-size: 16px;
-    margin-left: 10px;
+    content: '›'; font-size: 16px; margin-left: 10px;
     color: var(--text-muted);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth rotation */
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+details[open] summary::after { transform: rotate(90deg); color: #fff; }
+.accordion-content { padding: 0 15px; overflow: hidden; }
+.accordion-inner { padding: 15px 0; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 
-/* Rotate arrow when open */
-details[open] summary::after {
-    transform: rotate(90deg);
-    color: #fff;
-}
-
-/* THE CONTENT WRAPPER 
-   We will animate the height of this element using JS.
-*/
-.accordion-content {
-    padding: 0 15px; /* Move vertical padding to inner elements or handle dynamically */
-    overflow: hidden;
-}
-
-/* Inner content spacing */
-.accordion-inner {
-    padding: 15px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+/* --- HUD --- */
+#instructions {
+    position: absolute; bottom: 30px; width: 100%;
+    text-align: center; pointer-events: none; z-index: 10;
+    opacity: 0.6; font-size: 12px; letter-spacing: 0.5px;
 }
