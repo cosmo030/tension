@@ -10,7 +10,7 @@
 
 <br />
 
-> **[PLAY LIVE DEMO](https://yourusername.github.io/tension-sim/)** > *Click above to run the simulation in your browser.*
+> **[PLAY LIVE DEMO](https://yourusername.github.io/tension/)** > *Click above to run the simulation in your browser.*
 
 <br />
 
