@@ -2,6 +2,13 @@
 
 ![Project Status](https://img.shields.io/badge/status-active-success.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
+![Physics Engine](https://img.shields.io/badge/Physics-Matter.js-4B5563?style=flat&logo=matterdotjs&logoColor=white)
+![Vanilla JS](https://img.shields.io/badge/Code-Vanilla%20JS-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![Style](https://img.shields.io/badge/Style-CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+
+![UI Design](https://img.shields.io/badge/UI-Glassmorphism-blueviolet?style=flat)
+![Typography](https://img.shields.io/badge/Font-Fira%20Code-000000?style=flat&logo=googlefonts&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
@@ -59,7 +66,3 @@ This project is built with vanilla HTML, CSS, and JavaScript. No build steps (np
 * **Physics Engine:** [Matter.js](https://brm.io/matter-js/) (v0.19.0).
 * **Rendering:** HTML5 Canvas API (Custom render loop for performance optimization).
 * **Fonts:** [Fira Code](https://fonts.google.com/specimen/Fira+Code) (Google Fonts).
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
