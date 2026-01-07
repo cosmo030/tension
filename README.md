@@ -8,6 +8,12 @@
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
+<br />
+
+> **[PLAY LIVE DEMO](https://yourusername.github.io/tension-sim/)** > *Click above to run the simulation in your browser.*
+
+<br />
+
 **tension.** is an interactive, browser-based physics simulation that explores the structural dynamics of cloth. Built on the [Matter.js](https://brm.io/matter-js/) physics engine, it visualizes stress, tension, and material failure in real-time through a "Midnight Cyber" interface.
 
 ## 🚀 Features
