@@ -1,7 +1,6 @@
 # tension.
 
 ![Project Status](https://img.shields.io/badge/status-active-success.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Physics Engine](https://img.shields.io/badge/Physics-Matter.js-4B5563?)
 ![UI Design](https://img.shields.io/badge/UI-Glassmorphism-blueviolet?style=flat)
 ![Typography](https://img.shields.io/badge/Font-Fira%20Code-000000?style=flat&logo=googlefonts&logoColor=white)
